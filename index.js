@@ -7,7 +7,7 @@ function splitLine(line) {
     return line.split(re);
 }
 
-const MAX_SIG_NUM_LINES = 16;
+const MAX_SIG_NUM_LINES = 18;
 
 function maybeEmail(str) {
     const re = /\S@\S/;
@@ -160,8 +160,8 @@ function getSignature(body, from, bodyNoSig) {
     if (!lines ) { return ret; }
     
     
-    //The first line cannot be a signature. It has to start <= 25 lines from the end.
-    const startLine = Math.max(lines.length - 25,1);
+    //The first line cannot be a signature. It has to start <= MAX_SIG_NUM_LINES lines from the end.
+    const startLine = Math.max(lines.length - MAX_SIG_NUM_LINES,1);
     //Collect candidates for sig, score each one.
     const candStartSig = [];
     for (let i = startLine ; i < lines.length; ++i) { 
