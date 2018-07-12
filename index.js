@@ -70,9 +70,11 @@ function getSenderScore(line, arrSenderTok, requireCloseStart) {
   line = line.trim();
   const normLine = String(line).toLowerCase();
   let totalLenMatchingToks = 0;
-  for (const tok of (arrSenderTok || [])) {    
-    const idx = normLine.indexOf(tok);
-    if (idx != -1) {
+  for (const tok of (arrSenderTok || [])) {
+	const wholeWordTokPat = '\\b'+tok+'\\b';    
+    const m = new RegExp(wholeWordTokPat).exec(normLine);      
+    if (m != null) {
+	  const idx = m.index;	
       nMatchToks += 1;
       totalLenMatchingToks += tok.length;
       if (idx < minSenderIdx) {
@@ -85,13 +87,15 @@ function getSenderScore(line, arrSenderTok, requireCloseStart) {
         normLine[idx] !== normLine[idx].toLocaleUpperCase()) { //Heb, CHS don't have upper case anyway.
         nMatchCapToks += 1;
       }
-    }
+    } //End if m != null
 
   } //End for tok
 
   if (nMatchToks === 0) { 
     score = 0;
-  } else if (requireCloseStart && (minSenderIdx > maxDistFromStartLine)) { //* Require name to be close to start of the line (avoid long lines that are part of email body that mentions sender name)
+  } else if (totalLenMatchingToks <= 2) { //* Require matching more than 2 characters (avoid David E. Cohen - match 'E' or Zacharay St. George - Match 'St')
+    score = 0;
+  }  else if (requireCloseStart && (minSenderIdx > maxDistFromStartLine)) { //* Require name to be close to start of the line (avoid long lines that are part of email body that mentions sender name)
     score = 0;
   } else if ((maxSenderIdx - minSenderIdx) / totalLenMatchingToks > 2) { //* Require matching sender tokens to be nearby (but not adjacent)
     score = 0;
