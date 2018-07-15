@@ -4,7 +4,7 @@
   "description": "Detects and extracts email signatures ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
   "author": "Dekel Cohen",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.10",
-    "email-util": "git+https://github.com/dekelcohen/email-util.git#development"
+    "email-util": "git+https://github.com/dekelcohen/email-util.git#development",
+    "jest": "^23.4.1",
+    "lodash": "^4.17.10"
   }
 }
