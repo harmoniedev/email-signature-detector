@@ -204,4 +204,9 @@ module.exports = {
    maybeEmail,   //For testing
    isUrl,        //For testing
    isSentFromMy, //For testing
+   getSenderScore, //For testing
+   maybeStartSig,
+   isListLine,
+   isLongLine,
+   getSignatureScore,
 }
