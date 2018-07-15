@@ -26,7 +26,7 @@ function isUrl(str) {
 }
 
 function isInternetService(str) {
-    const re = /skype:|skype\s{0,5}id:|\(skype\)|twitter|facebook|linkedin|blog|youtube/;
+    const re = /skype:|skype\s{0,5}id:|\(skype\)|twitter|facebook|linkedin|blog/;
     return re.test(String(str).toLowerCase());
 }
 
