@@ -25,6 +25,7 @@ const phoneTestData = [
 	{ line: '49-89--636     48018', expected: false },
     { line: 'Italy: +39 0 230 57 81 42', expected: true },
     { line: 'When: Sep 24, 2017 10:30:00 AM', expected: false },
+    { line: 'When: 24-09-17', expected: false, only: true },
     { line: '030 3080 8556 (fax)', expected: true },
     { line: '312-57777793', expected: true },
 
@@ -39,9 +40,15 @@ const phoneTestData = [
 /* 
 
 */
-describe('test Phone number extractor', () => {
-	for (const tcData of phoneTestData) {
+describe.only('test Phone number extractor', () => {
+	let executedTestsData = phoneTestData.filter((tcData)=>tcData.only);
+	if (executedTestsData.length === 0) {
+	    executedTestsData = phoneTestData;
+	}
+	for (const tcData of executedTestsData) {
 	    it(`test ${tcData.line}`, () => {
+	    	//debugger;
+	
 	        const isPhone = signature.maybePhone(tcData.line);
 	        expect(isPhone).toEqual(tcData.expected);
 	     });
