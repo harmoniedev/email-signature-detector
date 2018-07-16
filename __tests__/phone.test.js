@@ -25,9 +25,13 @@ const phoneTestData = [
 	{ line: '49-89--636     48018', expected: false },
     { line: 'Italy: +39 0 230 57 81 42', expected: true },
     { line: 'When: Sep 24, 2017 10:30:00 AM', expected: false },
+    { line: `---02/26/2018 12:07:56 PM---Hi everyone,  I'll be traveling Tues, Wed and Thursday t]Andrei Malacinski---02/26/2018 12:07:56 PM---`, expected: false },
+    { line: 'https://www.forbes.com/sites/amitchowdhry/2018/04/09/microsoft-monday-office-365-advanced-protection-5-billion-for-iot-research-ai-training-courses/#30beb8a4202e', expected: false },
     { line: 'When: 24-09-17', expected: false },
     { line: '030 3080 8556 (fax)', expected: true },
     { line: '312-57777793', expected: true },
+    { line: '*8-6-90-54504', expected: true },
+     
 
 
 	//Skipped - failing tests: Since we are interested in phones only for signature scoring purposes, it doesn't matter if we confuse them with email like (@) or url like 

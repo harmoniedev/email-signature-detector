@@ -139,7 +139,9 @@ function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
     for (let i = idxStartSig + 1; i < idxEndSig; ++i) {
         const line = lines[i];
         if (maybeEmail(line)  || maybePhone(line) || isUrl(line) || isInternetService(line) || isSentFromMy(line))  {
-            //console.log(`score line=${line}`);
+            //if (maybePhone(line)) {
+            //  console.log(`score line=${line}`);
+            //}
             score += 1;
         } else if (getSenderScore(line,arrSenderTok,true) > 0) {
             score += 1;
