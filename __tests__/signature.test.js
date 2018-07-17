@@ -66,7 +66,7 @@ describe('test isUrl', () => {
 describe('test maybeEmail', ()=>{
     const emailData = [
         {"text":"David Lda<mailto:davidl@lala.ie>", "expected": true},
-        //{"text":"stay@home with sick child", "expected": false},
+        {"text":"stay@home with sick child", "expected": false},
         {"text":"[Luis]: Are you able to see the collections being created after this initialization period? How long does it usually take? @Jj Mondal @wini have you tried this?", "expected": false},
     ];
     for (const a of emailData) {
@@ -97,13 +97,15 @@ describe('test senderScore', () => {
         {"testName":"simple", "line": "David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
         {"testName":"non capitalized", "line": "david", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:0.5 },
         {"testName":"spaces", "line": "a         David              bb", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
-        //{"testName":"different display name", "line": "David Long", "from": {"displayName": "Test Support", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
         {"testName":"special chars - email", "line": "thanks, O'hara", "from": {"displayName": "test", "mail":"o'hara@jaja.com"}, "requireCloseStart":true, expected:1 },
         {"testName":"special chars - displayName", "line": "thanks, O'hara", "from": {"displayName": "User O'hara", "mail":"test@jaja.com"}, "requireCloseStart":true, expected:1 },
         {"testName":"similar", "line": "Thanks, Davis", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:0 },
         {"testName":"not close to start", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:0 },
-        {"testName":"not close to start", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
+        {"testName":"not close to start - false", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
         {"testName":"assignmet", "line": "kjhkljlddddddddddddddddd - David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
+
+        //{"testName":"different display name", "line": "David Long", "from": {"displayName": "Test Support", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
+
 
 
 
@@ -121,13 +123,13 @@ describe('test senderScore', () => {
 describe('test maybeStartSig', () => {
     const startSigData = [
          {"testName":"simple", "line": "David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
-         {"testName":"not close to stars", "line": "123456789012345 David 1234567890123456", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: false },
-         {"testName":"not close to stars- false", "line": "123456789012345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
-         {"testName":"+Best", "line": "best wishes,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
-
-        //as designed but can be fixed:
+         {"testName":"thanks not close to start", "line": "12345 Thanks, ", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: false },
+         {"testName":"not close to end", "line": "thanks a lot for your time and ", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: false },
+         {"testName":"close to end", "line": "thanks for your time", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
+         {"testName":"Best", "line": "best wishes,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
          {"testName":"double space", "line": "Yours  Truly,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
          {"testName":"+Best", "line": "all the best,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
+         {"testName":"email line", "line": "David Long<mailto:davidl@lala.ie>", "from": {"displayName": "David Long", "mail":"davidl@lala.ie"}, expected: false },
 
     ];
 
@@ -144,7 +146,9 @@ describe('test isListLine', () => {
         {"text":"sent from my iPhone", "expected": false},
         {"text":"John A | CEO", "expected": true},
         {"text":"John A|CEO", "expected": true},
-        {"text":"| 210 Northern Avenue Suite 400 |", "expected": true}
+        {"text":"| 210 Northern Avenue Suite 400 |", "expected": true},
+        {"text":"John A:CEO", "expected": false},
+        {"text":"John A, CEO", "expected": false},
 
     ];
 
@@ -158,15 +162,26 @@ describe('test isListLine', () => {
 
 describe('test getSignatureScore', () => {
     const sigScoreData = [
-        {"testName":"simple", "idxStartSig":0, "idxEndSig":1, "lines": "David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1}
+        {"testName":"email rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"phone rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n 123 - 456 - 789 - 111\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"url rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n http://test.com \r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"internet service rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n Linkedin: \r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"sent from my rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n Sent From my iPhone\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"short line rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n test\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 0.25},        {"testName":"short line rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n Sent From my iPhone\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"list line rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n la | la | la\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 0.25},
+        {"testName":" capitalized sender rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n David\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"non capitalized sender rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n david\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
+        {"testName":"long line rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n this is a longg line with a lot af words about a lot of things.\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: -0.75},
+        {"testName":"sig + long line rank", "idxStartSig":1, "idxEndSig":6, "body": "lalala\r\nthanks\r\n  123 - 456 - 789 - 111 \r\n lala@lala.com\r\n David\r\ntest longg line at the end to remove score lala la la la la la la la \r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2.5},
+        {"testName":"email and sender rank", "idxStartSig":1, "idxEndSig":4, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nDavid\r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2},
 
     ];
 
     for(const a of sigScoreData) {
         let { arrNameTok } = per.parseMailTokens( a.from );
-
+        let lines = (a.body).match(/[^\r\n]+/g);
         it(`test ${a.testName}`, () => {
-            expecte(signature.getSignatureScore(a.idxStartSig, a.idxEndSig, a.lines, arrNameTok)).toEqual(a.expectedScore)
+            expect(signature.getSignatureScore(a.idxStartSig, a.idxEndSig, lines, arrNameTok)).toEqual(a.expectedScore)
         });
     }
 });
