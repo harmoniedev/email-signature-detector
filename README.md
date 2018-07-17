@@ -40,6 +40,14 @@ body - contains the email body text
 from - optional: contains email and displayName used to detect the sender name in the signature. (see example in Usage)
 bodyNoSig - optional: if true the return object includes bodyNoSig : the email text until the beginning of the signature. 
 
+### removeSignature(body,from)
+returns - the email text until the beginning of the signature
+body - contains the email body text 
+from - optional: contains email and displayName used to detect the sender name in the signature. (see example in Usage)
+
+ 
+
+
 ## How does it work ?
 
 Currently, the library implements a simple algorithm to detect candidate signature starts, and score each by examining the lines following the start.
