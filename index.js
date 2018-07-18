@@ -167,7 +167,7 @@ function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
 
 //from.email || from.mail, from.displayName
 function getSignature(body, from, bodyNoSig) {
-    let ret = { signature : '', bodyNoSig : '', found : false };    
+    let ret = { signature : '',  found : false };    
     const { arrNameTok } = per.parseMailTokens( from );
     const lines = body.match(/[^\r\n]+/g);
     if (!lines ) { return ret; }
@@ -208,7 +208,7 @@ function getSignature(body, from, bodyNoSig) {
 
 function removeSignature(body,from) {
   const ret = getSignature(body,from,true);
-  return ret.bodyNoSig;
+  return ret.found ? ret.bodyNoSig : body;
 }
 
 

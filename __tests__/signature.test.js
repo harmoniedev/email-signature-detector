@@ -186,6 +186,19 @@ describe('test getSignatureScore', () => {
     }
 });
 
+describe('test api', () => {
+    it(`test removeSignature when signature is detected`, () => {
+        const body = `Hi Text\nThanks,\nDekel`;
+        const from = { displayName : 'Dekel Cohen', email: 'dekel@somemail.net'}
+        expect(signature.removeSignature(body, from)).toEqual('Hi Text');
+    });
+
+    it(`test removeSignature when signature is not detected`, () => {
+        const body = `Hi Text\nThanks`;
+        const from = { displayName : 'Dekel Cohen', email: 'dekel@somemail.net'}
+        expect(signature.removeSignature(body, from)).toEqual(body);
+    });  
+});
 
 
 
