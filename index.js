@@ -10,7 +10,7 @@ function splitLine(line) {
 const MAX_SIG_NUM_LINES = 18;
 
 function maybeEmail(str) {
-    const re = /\S@\S/;
+    const re = /\S{1,30}@\S{1,30}\.\S{1,30}/;
     return re.test(String(str).toLowerCase());
 }
 
@@ -139,7 +139,7 @@ function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
     for (let i = idxStartSig + 1; i < idxEndSig; ++i) {
         const line = lines[i];
         if (maybeEmail(line)  || maybePhone(line) || isUrl(line) || isInternetService(line) || isSentFromMy(line))  {
-            //if (maybePhone(line)) {
+            //if (maybeEmail(line)) {
             //  console.log(`score line=${line}`);
             //}
             score += 1;
