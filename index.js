@@ -141,10 +141,11 @@ function maybeStartSig(line, arrSenderTok) {
             }        
         }
     }
+    let isSender = false;
     if (!startSig) {
-      startSig = !maybeEmail(line) &&  getSenderScore(line,arrSenderTok,true) >= 1;
+      startSig = isSender = !maybeEmail(line) &&  getSenderScore(line,arrSenderTok,true) >= 1;
     }
-    return startSig;
+    return  { found: startSig, props: { isSender }};
 }
 
 const SCORE_SIG_LINE = 1;
@@ -191,6 +192,23 @@ function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
     return { score, dbg: { lni } };
 }
 
+function tryExtractSig({score, dbg, idxStartSig, props },lines, { bodyNoSig }, ret) {
+    let idxStartFinalSig = -1;
+      //* Require > 4 or 30% lines, after the startSig, looks like one of the above signature clues.
+      if (score >= 4 || 
+         (score / (lines.length - idxStartSig) >= 0.3 ) || 
+         (props.isSender && (lines.length - idxStartSig) === 1)) {
+          //* Limit to delete only 16 lines from the end of the email (not after the startSig)
+          idxStartFinalSig =  Math.max(lines.length - MAX_SIG_NUM_LINES, idxStartSig);
+          ret.signature = lines.slice(idxStartFinalSig).join('\r\n');            
+          ret.found = true;
+          if (bodyNoSig) {
+              ret.bodyNoSig = lines.slice(0,idxStartFinalSig).join('\r\n');
+          }
+      } 
+      ret.dbg = { ...ret.dbg, ...dbg };
+}
+
 //from.email || from.mail, from.displayName
 function getSignature(body, from, bodyNoSig) {
     let ret = { signature : '',  found : false, dbg: {} };    
@@ -203,31 +221,29 @@ function getSignature(body, from, bodyNoSig) {
     const startLine = Math.max(lines.length - MAX_SIG_NUM_LINES,1);
     //Collect candidates for sig, score each one.
     const candStartSig = [];
-    for (let i = startLine ; i < lines.length; ++i) { 
-        if (maybeStartSig(lines[i], arrNameTok) )  {                
+    for (let i = startLine ; i < lines.length; ++i) {
+        const startSig = maybeStartSig(lines[i], arrNameTok); 
+        if ( startSig.found )  {                
             const ret = getSignatureScore(i,lines.length,lines,arrNameTok);
-            //console.log(`maybeStartSig score=${score} line num/total ${i}/${lines.length} line=${lines[i]} `);
-            candStartSig.push({score: ret.score, dbg: ret.dbg, idxStartSig : i});
+            //console.log(`maybeStartSig score=${ret.score} line num/total ${i}/${lines.length} line=${lines[i]} `);
+            candStartSig.push({score: ret.score, props : startSig.props, dbg: ret.dbg, idxStartSig : i});
         }
     }
     //* Select the best candidate. Prefer higher score but also close to the bottom of the email (where we expect to find sigs)
     if (candStartSig.length > 0) {
         const rankedCands = _.orderBy(candStartSig,'score','desc');    
-        const { score, dbg, idxStartSig } = rankedCands[0];    
+        let cand = rankedCands[0];    
 
-        let idxStartFinalSig = -1;
-        //* Require > 4 or 30% lines, after the startSig, looks like one of the above signature clues.
-        if (score >= 4 || (score / (lines.length - idxStartSig) >= 0.3 ) ) {
-            //* Limit to delete only 16 lines from the end of the email (not after the startSig)
-            idxStartFinalSig =  Math.max(lines.length - MAX_SIG_NUM_LINES, idxStartSig);
-            ret.signature = lines.slice(idxStartFinalSig).join('\r\n');            
-            ret.found = true;
-            if (bodyNoSig) {
-                ret.bodyNoSig = lines.slice(0,idxStartFinalSig).join('\r\n');
-            }
+        tryExtractSig(rankedCands[0],lines, { bodyNoSig }, ret);
+        if (!ret.found) {
+          //* Try name only at the end of email sig (even if not enough score)
+          const nameAtEndCands = rankedCands.filter((cand)=> cand.props.isSender && (lines.length - cand.idxStartSig) === 1);
+          if (nameAtEndCands.length > 0) {
+            tryExtractSig(nameAtEndCands[0], lines, { bodyNoSig }, ret);
+            if (ret.found) { cand = nameAtEndCands[0]; }
+          }  
         }
-        ret.dbg = { ...ret.dbg, ...dbg };
-        //console.log(`found=${ret.found} idxStartFinalSig=${idxStartFinalSig} idxStartSig=${idxStartSig} score=${score} lines.length - idxStartSig=${lines.length - idxStartSig} candStartSig.length=${candStartSig.length}\nsig:\n----------\n${ret.signature}\ndbg:\n- - - - - - \n${ret.dbg.lni}`);
+        //console.log(`found=${ret.found} idxStartSig=${cand.idxStartSig} score=${cand.score} lines.length - idxStartSig=${lines.length - cand.idxStartSig} candStartSig.length=${candStartSig.length}\nsig:\n----------\n${ret.signature}\ndbg:\n- - - - - - \n${ret.dbg.lni}`);
     }
     return ret;
         
