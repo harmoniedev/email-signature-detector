@@ -30,6 +30,11 @@ function isInternetService(str) {
     return re.test(String(str).toLowerCase());
 }
 
+function isEmbeddedImage(str) {
+    const re = /\[cid:/;
+    return re.test(String(str).toLowerCase());
+}
+
 
 function isSentFromMy(str) {
     const re = /\s{0,5}sent from my/;
@@ -140,11 +145,13 @@ function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
         const line = lines[i];
         if (maybeEmail(line)  || maybePhone(line) || isUrl(line) || isInternetService(line) || isSentFromMy(line))  {
             //if (maybeEmail(line)) {
-            //  console.log(`score line=${line}`);
+            //console.log(`score line=${line}`);
             //}
             score += 1;
         } else if (getSenderScore(line,arrSenderTok,true) > 0) {
-            score += 1;
+            score += 1;            
+        } else if (isEmbeddedImage(line)) {
+          score += 0.5;    
         } else if (isShortLine(line) || isListLine(line)) {
             score += 0.25;
         } else if (isLongLine(line)) {
