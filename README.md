@@ -38,7 +38,7 @@ TBD
 returns - { signature: the signature text, bodyNoSig: see optional bodyNoSig parameter below }
 body - contains the email body text 
 from - optional: contains email and displayName used to detect the sender name in the signature. (see example in Usage)
-bodyNoSig - optional: if true the return object includes bodyNoSig : the email text until the beginning of the signature. 
+bodyNoSig - optional: if true and the signature is found, the return object includes bodyNoSig : the email text until the beginning of the signature. 
 
 ### removeSignature(body,from)
 returns - the email text until the beginning of the signature
@@ -55,3 +55,7 @@ Currently, the library implements a simple algorithm to detect candidate signatu
 For example, words such as Thanks and Regards, when used in short lines are considerd a candidate. the score of each candidate is determined by the content of the following lines, such as phone number, email address, url, sender name.
 
 Note: The detectors of phone numbers, email addresses and urls are simple and their purpose is to support the signature scoring. They shouldn't be used standalone. refer to a specialized detector and validation libraries for that.      
+
+## Roadmap and Contributions
+
+### Currently, only English is supported.
