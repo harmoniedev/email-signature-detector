@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const per = require('email-util/per');
 const phone = require('email-util/phone');
+const marketing = require('email-util/marketing');
 
 function splitLine(line) {
     const re = /\s/;
@@ -36,6 +37,7 @@ function isEmbeddedImage(str) {
 }
 
 
+
 function isSentFromMy(str) {
     const re = /\s{0,5}sent from my/;
     return re.test(String(str).toLowerCase());
@@ -50,7 +52,13 @@ function isLongLine(line) {
     return splitLine(line).length > 5;
 }
 
-
+function mayBeUnsubscribe(line) {
+  const words = marketing.getInitSpecialBodyWords();
+  marketing.getSpecialBodyWords(line, words);
+  const re = /opt{0,2}out/;
+  return words.unsubscribe > 0 || words.noWishReceive > 0 || re.test(String(line).toLowerCase());
+  
+}
 
 //Ex: Joe Benjamin | Founder & CEO | youngStartup
 function isListLine(line) {
@@ -139,35 +147,53 @@ function maybeStartSig(line, arrSenderTok) {
     return startSig;
 }
 
+const SCORE_SIG_LINE = 1;
+const SCORE_EMBEDDED = 0.5;
+const SCORE_URL_LONG_LINE = 0.25;
+const SCORE_SHORT_LIST_LINE = 0.25;
+const SCORE_LONG_LINE_LOW = -0.5;
+const SCORE_LONG_LINE_HIGH = -0.75;
+
 function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
-    let score = 0;
+    let score = 0;    
+    let lni = '';
     for (let i = idxStartSig + 1; i < idxEndSig; ++i) {
         const line = lines[i];
-        if (maybeEmail(line)  || maybePhone(line) || isUrl(line) || isInternetService(line) || isSentFromMy(line))  {
-            //if (maybeEmail(line)) {
-            //console.log(`score line=${line}`);
-            //}
-            score += 1;
+        if (maybeEmail(line)  || maybePhone(line) || isInternetService(line) || isSentFromMy(line))  {
+            lni += (`>> +${SCORE_SIG_LINE} line=${line}\n`);
+            score += SCORE_SIG_LINE;
         } else if (getSenderScore(line,arrSenderTok,true) > 0) {
-            score += 1;            
+            lni += (`>> sender +${SCORE_SIG_LINE} line=${line}\n`);
+            score += SCORE_SIG_LINE;
+        } else if (isUrl(line)) {
+            const numWords = splitLine(line).length;
+            //Score urls less as they appear in a longer line (probably not a signature, but a regular email line)
+            
+            const urlScore = numWords < 15 || isListLine(line) || mayBeUnsubscribe(line) ? SCORE_SIG_LINE : SCORE_URL_LONG_LINE;
+            lni +=(`>> url ${urlScore} line=${line}\n`);
+            score +=  urlScore; 
         } else if (isEmbeddedImage(line)) {
-          score += 0.5;    
+          lni +=(`>> cid +${SCORE_EMBEDDED} line=${line}\n`);
+          score += SCORE_EMBEDDED;    
         } else if (isShortLine(line) || isListLine(line)) {
-            score += 0.25;
-        } else if (isLongLine(line)) {
+            lni += (`>> short +${SCORE_SHORT_LIST_LINE} line=${line}\n`);
+            score += SCORE_SHORT_LIST_LINE;
+        } else if (isLongLine(line) && !mayBeUnsubscribe(line)) {
+          const longScore =  score > 2 ? SCORE_LONG_LINE_LOW : SCORE_LONG_LINE_HIGH;
+          lni += (`>> long ${longScore} line=${line}\n`);
           //If long line and didn't find any sig-hint (url, phone, list ...) --> may be a false sig start that include many text line below it --> penalize score 
           //Long-lines should penalize more if not enough evidence (score) is accumulated from idxStartSig until current long line
           //Ex: Thanks at the beginning --> short email (2-3 long lines) --> long signature (many good sig lines) without a  maybeStartSig --> may cut entire email !!!
           //If, on the other hand, there are several anti-virus/ecological/legal/marketing advertisment long lines AFTER or in a MIDDLE of a good signature (score is higher) --> penalize less
-          score -= score > 2 ? 0.5 : 0.75; 
+          score += longScore; 
         }               
     }   
-    return score;
+    return { score, dbg: { lni } };
 }
 
 //from.email || from.mail, from.displayName
 function getSignature(body, from, bodyNoSig) {
-    let ret = { signature : '',  found : false };    
+    let ret = { signature : '',  found : false, dbg: {} };    
     const { arrNameTok } = per.parseMailTokens( from );
     const lines = body.match(/[^\r\n]+/g);
     if (!lines ) { return ret; }
@@ -179,15 +205,15 @@ function getSignature(body, from, bodyNoSig) {
     const candStartSig = [];
     for (let i = startLine ; i < lines.length; ++i) { 
         if (maybeStartSig(lines[i], arrNameTok) )  {                
-            const score = getSignatureScore(i,lines.length,lines,arrNameTok);
+            const ret = getSignatureScore(i,lines.length,lines,arrNameTok);
             //console.log(`maybeStartSig score=${score} line num/total ${i}/${lines.length} line=${lines[i]} `);
-            candStartSig.push({score,idxStartSig : i});
+            candStartSig.push({score: ret.score, dbg: ret.dbg, idxStartSig : i});
         }
     }
     //* Select the best candidate. Prefer higher score but also close to the bottom of the email (where we expect to find sigs)
     if (candStartSig.length > 0) {
         const rankedCands = _.orderBy(candStartSig,'score','desc');    
-        const { score, idxStartSig } = rankedCands[0];    
+        const { score, dbg, idxStartSig } = rankedCands[0];    
 
         let idxStartFinalSig = -1;
         //* Require > 4 or 30% lines, after the startSig, looks like one of the above signature clues.
@@ -200,7 +226,8 @@ function getSignature(body, from, bodyNoSig) {
                 ret.bodyNoSig = lines.slice(0,idxStartFinalSig).join('\r\n');
             }
         }
-        //console.log(`found=${ret.found} idxStartFinalSig=${idxStartFinalSig} idxStartSig=${idxStartSig} score=${score} candStartSig.length=${candStartSig.length}\nsig:\n----------\n${ret.signature}`);
+        ret.dbg = { ...ret.dbg, ...dbg };
+        //console.log(`found=${ret.found} idxStartFinalSig=${idxStartFinalSig} idxStartSig=${idxStartSig} score=${score} lines.length - idxStartSig=${lines.length - idxStartSig} candStartSig.length=${candStartSig.length}\nsig:\n----------\n${ret.signature}\ndbg:\n- - - - - - \n${ret.dbg.lni}`);
     }
     return ret;
         
