@@ -50,21 +50,27 @@ from - optional: contains email and displayName used to detect the sender name i
 
 ### Limitations
 
-- This library is intent to be used in the context of entreprise emails. It doens't work well for personal emails
+- Only the english language is supported.
+- This library is intent to be used in the context of entreprise emails. It doens't work well for personal emails.
+- This library doesn't detect well signatures that appear in automated emails. 
 
 ### Known issues
 
-- When a signature contains a job title that is very long (contains more that 10 words),  it is not properly detected as a signature. We believe (and hope) that very long job tiltes are not very common.
-- Forwarded email thread with several messages and several signatures: what happens in this case?
+- When a signature contains a job title that is very long (contains more that 10 words), it might cause the signature not to be detected. The reason is that the algorithm penalizes long lines in signatures. We believe (and hope) that very long job titles are not very common.
+- Forwarded email thread with several messages and several signatures: the signatures are not detected in this case.
+
 
 ## How does it work ?
 
-Currently, the library implements a simple algorithm to detect candidate signature starts, and score each by examining the lines following the start.
+The library implements a simple algorithm to detect candidate signature starts, and score each candidate by examining the lines following the start.
 
-For example, words such as Thanks and Regards, when used in short lines are considerd a candidate. the score of each candidate is determined by the content of the following lines, such as phone number, email address, url, sender name.
+For example, words such as Thanks and Regards, when used in short lines are considerd a candidate. The score of each candidate is determined by the content of the following lines, such as phone number, email address, url, sender name.
 
-Note: The detectors of phone numbers, email addresses and urls are simple and their purpose is to support the signature scoring. They shouldn't be used standalone. refer to a specialized detector and validation libraries for that.      
+Also, we implement some heuristics, for instance:
+- long lines should not appear too much in signature
+- signatures should not have too many lines
+
+Note: The detectors of phone numbers, email addresses and urls are simple and their purpose is to support the signature scoring. They shouldn't be used standalone. Please refer to a specialized detector and validation libraries for that.      
 
 ## Roadmap and Contributions
 
-### Currently, only English is supported.
