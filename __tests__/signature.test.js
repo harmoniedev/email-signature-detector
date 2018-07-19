@@ -136,7 +136,7 @@ describe('test maybeStartSig', () => {
     for (const a of startSigData) {
         let { arrNameTok } = per.parseMailTokens( a.from );
         it(`test ${a.testName}`, () => {
-            expect(signature.maybeStartSig(a.line, arrNameTok)).toEqual(a.expected);
+            expect(signature.maybeStartSig(a.line, arrNameTok).found).toEqual(a.expected);
         });
     }
 });
@@ -181,7 +181,7 @@ describe('test getSignatureScore', () => {
         let { arrNameTok } = per.parseMailTokens( a.from );
         let lines = (a.body).match(/[^\r\n]+/g);
         it(`test ${a.testName}`, () => {
-            expect(signature.getSignatureScore(a.idxStartSig, a.idxEndSig, lines, arrNameTok)).toEqual(a.expectedScore)
+            expect(signature.getSignatureScore(a.idxStartSig, a.idxEndSig, lines, arrNameTok).score).toEqual(a.expectedScore)
         });
     }
 });
