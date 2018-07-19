@@ -55,6 +55,7 @@ from - optional: contains email and displayName used to detect the sender name i
 ### Known issues
 
 - When a signature contains a job title that is very long (contains more that 10 words),  it is not properly detected as a signature. We believe (and hope) that very long job tiltes are not very common.
+- Forwarded email thread with several messages and several signatures: what happens in this case?
 
 ## How does it work ?
 
