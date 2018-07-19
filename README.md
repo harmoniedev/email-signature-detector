@@ -46,7 +46,15 @@ body - contains the email body text
 from - optional: contains email and displayName used to detect the sender name in the signature. (see example in Usage)
 
  
+## Limitations and known issues
 
+### Limitations
+
+- This library is intent to be used in the context of entreprise emails. It doens't work well for personal emails
+
+### Known issues
+
+- When a signature contains a job title that is very long (contains more that 10 words),  it is not properly detected as a signature. We believe (and hope) that very long job tiltes are not very common.
 
 ## How does it work ?
 
