@@ -103,6 +103,7 @@ describe('test senderScore', () => {
         {"testName":"not close to start", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:0 },
         {"testName":"not close to start - false", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
         {"testName":"assignmet", "line": "kjhkljlddddddddddddddddd - David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
+        {"testName":"assignmet", "line": "Stan Bee & Lee told us that", "from": {"displayName" : "David St. George", "mail" : "zacharys@harmon.ie"}, "requireCloseStart":true, expected:0 },
 
         //{"testName":"different display name", "line": "David Long", "from": {"displayName": "Test Support", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
 
@@ -130,6 +131,8 @@ describe('test maybeStartSig', () => {
          {"testName":"double space", "line": "Yours  Truly,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
          {"testName":"+Best", "line": "all the best,", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expected: true },
          {"testName":"email line", "line": "David Long<mailto:davidl@lala.ie>", "from": {"displayName": "David Long", "mail":"davidl@lala.ie"}, expected: false },
+         {"testName":"sent from my line", "line": "Sent from my iPhone", "from": {"displayName": "David Long", "mail":"davidl@lala.ie"}, expected: true },
+
 
     ];
 
@@ -179,6 +182,26 @@ describe('test isEmbeddedImage', () => {
 
 });
 
+describe('test isInternetService', () => {
+    const InternetServiceData = [
+        {"text":"Skype ID: daaaaaaa.aaa", "expected": true},
+        {"text":"[cid:_1_85F64GG5F64248004D793185258211].", "expected": false},
+        {"text":"Connect With Me: LinkedIn", "expected": true},
+        {"text":"Skype: Cj.adllltive", "expected": true},
+        {"text":"  *   Skype ID: aaa", "expected": true},
+        {"text":"P: 444-401-7148 • F: 444-864-3947 • Skype: aaa.aaa", "expected": true},
+
+
+    ];
+
+    for (const a of InternetServiceData) {
+        it(`test ${a.text}`, () => {
+            expect(signature.isInternetService(a.text)).toEqual(a.expected);
+        });
+    }
+
+});
+
 describe('test getSignatureScore', () => {
     const sigScoreData = [
         {"testName":"email rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
@@ -194,6 +217,7 @@ describe('test getSignatureScore', () => {
         {"testName":"sig + long line rank", "idxStartSig":1, "idxEndSig":6, "body": "lalala\r\nthanks\r\n  123 - 456 - 789 - 111 \r\n lala@lala.com\r\n David\r\ntest longg line at the end to remove score lala la la la la la la la \r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2.5},
         {"testName":"email and sender rank", "idxStartSig":1, "idxEndSig":4, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nDavid\r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2},
         {"testName":"image rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n [cid:jD9V0h2pGGGU1JF-XpdgEW_BQugEFDHaGKzrAy9q-aw=]\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 0.5},
+        {"testName":"internet service", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n Skype ID: lala.lalala \r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
 
     ];
 
