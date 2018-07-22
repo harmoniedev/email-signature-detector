@@ -34,5 +34,14 @@
       "mail" : "davidl@hmon.ie"
     },
     "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n+972-555-444-888\r\n e: lala@lala.com\r\nhttp://lala.com\r\n fax: 555-444-666-666 \r\nSkypeId: 11223344\r\nshortline\r\nList | Line \r\n List | Line | 2\r\n+1-888-000-111\r\n\r\n\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
+  },
+  {
+    "testName" : "name at the end only",
+    "expected" : "David",
+    "from" : {
+      "displayName" : "David Long",
+      "mail" : "davidl@hmon.ie"
+    },
+    "body" : "The standard edition located on \\ftp\\files\\test\\\\9.0.1.\r\nThanks. \r\nPlease call me if you need any other information\r\nfeel free to contact me at\r\n+1800 00 00 003\r\n\r\nDavid"
   }
 ]

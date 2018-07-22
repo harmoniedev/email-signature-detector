@@ -103,12 +103,12 @@ describe('test senderScore', () => {
         {"testName":"not close to start", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:0 },
         {"testName":"not close to start - false", "line": "123451234512345 David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
         {"testName":"assignmet", "line": "kjhkljlddddddddddddddddd - David", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, "requireCloseStart":false, expected:1 },
-        {"testName":"assignmet", "line": "Stan Bee & Lee told us that", "from": {"displayName" : "David St. George", "mail" : "zacharys@harmon.ie"}, "requireCloseStart":true, expected:0 },
+        {"testName":"partial match", "line": "* Stan Bee & Lee told us", "from": {"displayName" : "David St. George", "mail" : "davids@lala.com"}, "requireCloseStart":true, expected:0 },
+        {"testName":"partial token match", "line": "* St and Bee & Lee told us", "from": {"displayName" : "David St. George", "mail" : "davids@lala.com"}, "requireCloseStart":true, expected:0 },
+        {"testName":"not nearby match", "line": "* David and also St Lee told us", "from": {"displayName" : "David St. George", "mail" : "davids@lala.com"}, "requireCloseStart":true, expected:0 },
+        {"testName":"nearby match", "line": "* David a St Lee told us", "from": {"displayName" : "David St. George", "mail" : "davids@lala.com"}, "requireCloseStart":true, expected:1 },
 
         //{"testName":"different display name", "line": "David Long", "from": {"displayName": "Test Support", "mail":"davidl@jaja.com"}, "requireCloseStart":true, expected:1 },
-
-
-
 
     ];
 
@@ -158,6 +158,24 @@ describe('test isListLine', () => {
     for (const a of listLineData) {
         it(`test ${a.text}`, () => {
             expect(signature.isListLine(a.text)).toEqual(a.expected);
+        });
+    }
+
+});
+
+describe('test isLongLine', () => {
+    const longLineData = [
+        {"text":"sent from my iPhone", "expected": false},
+        {"text":"John A | CEO", "expected": false},
+        {"text":"test test test test test", "expected": false},
+        {"text":"test test test test test test", "expected": true},
+        {"text":"210 Northern Avenue, Suite 400", "expected": false},
+
+    ];
+
+    for (const a of longLineData) {
+        it(`test ${a.text}`, () => {
+            expect(signature.isLongLine(a.text)).toEqual(a.expected);
         });
     }
 
