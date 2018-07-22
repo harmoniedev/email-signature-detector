@@ -160,6 +160,25 @@ describe('test isListLine', () => {
 
 });
 
+describe('test isEmbeddedImage', () => {
+    const EmbeddedImageData = [
+        {"text":"Skype id", "expected": false},
+        {"text":"[cid:_1_85F64GG5F64248004D793185258211].", "expected": true},
+        {"text":"[cid:jD9V0h2pRGGG1JF-XpdgEW_BQugEFDHaGKzrAy9q-aw=]<http://indicative.com>", "expected": true},
+        {"text":"[cid:2__=8FBBGGGDF87C7AD8f9e8a93df938690918c8FB@]", "expected": true},
+        {"text":"  *   [cid:1511GG246432]", "expected": true},
+        {"text":"https://test-my.sharepoint.com/personal/ie/_layouts/15/guestaccess.aspx?guestaccesstoken=hhhkgBLepKYkPNBdH5kK06Dnu93fw%3d&docid=2_19adbf0164817432b8ef07771b725ea74&rev=1&", "expected": false},
+
+    ];
+
+    for (const a of EmbeddedImageData) {
+        it(`test ${a.text}`, () => {
+            expect(signature.isEmbeddedImage(a.text)).toEqual(a.expected);
+        });
+    }
+
+});
+
 describe('test getSignatureScore', () => {
     const sigScoreData = [
         {"testName":"email rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 1},
@@ -174,6 +193,7 @@ describe('test getSignatureScore', () => {
         {"testName":"long line rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n this is a longg line with a lot af words about a lot of things.\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: -0.75},
         {"testName":"sig + long line rank", "idxStartSig":1, "idxEndSig":6, "body": "lalala\r\nthanks\r\n  123 - 456 - 789 - 111 \r\n lala@lala.com\r\n David\r\ntest longg line at the end to remove score lala la la la la la la la \r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2.5},
         {"testName":"email and sender rank", "idxStartSig":1, "idxEndSig":4, "body": "lalala\r\nthanks\r\n lala@lala.com\r\nDavid\r\n", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 2},
+        {"testName":"image rank", "idxStartSig":1, "idxEndSig":3, "body": "lalala\r\nthanks\r\n [cid:jD9V0h2pGGGU1JF-XpdgEW_BQugEFDHaGKzrAy9q-aw=]\r\nlalala", "from": {"displayName": "David Long", "mail":"davidl@jaja.com"}, expectedScore: 0.5},
 
     ];
 
@@ -199,6 +219,8 @@ describe('test api', () => {
         expect(signature.removeSignature(body, from)).toEqual(body);
     });  
 });
+
+
 
 
 

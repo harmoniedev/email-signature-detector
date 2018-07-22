@@ -267,4 +267,5 @@ module.exports = {
    isListLine,
    isLongLine,
    getSignatureScore,
+   isEmbeddedImage
 }

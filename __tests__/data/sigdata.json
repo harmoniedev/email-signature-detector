@@ -25,5 +25,14 @@
       "mail" : "davidl@hmon.ie"
     },
     "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n               FRI 11 MAY 2019\r\n-----------------------------------------------------------------------------\r\nDEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       11 MAY 00:30\r\nARRIVAL:   NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        11 MAY 05:10\r\n\r\n\r\nVegas-EWR 23 May (Leaving after 2PM)\r\n\r\n\r\nFLIGHT     LY 074 - EL AL ISRAEL AIRLINES                     THU 24 MAY 2018\r\n\r\n-----------------------------------------------------------------------------\r\n\r\nDEPARTURE: NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        24 MAY 10:30\r\n\r\nARRIVAL:   TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       25 MAY 05:00\r\n\r\n           FLIGHT BOOKING REF: LY/Q29YTR\r\n\r\n\r\nLet’s discuss internal flights\r\n\r\nJFK – Chicago Jet Blue 8:20AM\r\nChicago – NY 13 May evening\r\n\r\n________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
+  },
+  {
+    "testName" : "18 lines",
+    "expected" : "",
+    "from" : {
+      "displayName" : "David Long",
+      "mail" : "davidl@hmon.ie"
+    },
+    "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n+972-555-444-888\r\n e: lala@lala.com\r\nhttp://lala.com\r\n fax: 555-444-666-666 \r\nSkypeId: 11223344\r\nshortline\r\nList | Line \r\n List | Line | 2\r\n+1-888-000-111\r\n\r\n\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
   }
 ]
