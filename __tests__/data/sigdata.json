@@ -43,5 +43,14 @@
       "mail" : "davidl@hmon.ie"
     },
     "body" : "The standard edition located on \\ftp\\files\\test\\\\9.0.1.\r\nThanks. \r\nPlease call me if you need any other information\r\nfeel free to contact me at\r\n+1800 00 00 003\r\n\r\nDavid"
+  },
+  {
+    "testName" : "no body",
+    "expected" : "",
+    "from" : {
+      "displayName" : "David Long",
+      "mail" : "davidl@hmon.ie"
+    },
+    "body" : ""
   }
 ]
