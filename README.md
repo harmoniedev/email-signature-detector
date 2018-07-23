@@ -51,13 +51,13 @@ from - optional: contains email and displayName used to detect the sender name i
 ### Limitations
 
 - Only the english language is supported.
-- This library is intent to be used in the context of entreprise emails. It doens't work well for personal emails.
-- This library doesn't detect well signatures that appear in automated emails. 
-- Some material that appear at the end of an email are detected as signature. For instance, online meeting details. 
+- This library is intented to be used in the context of entreprise emails. It was not tested with personal emails. It does, however detects simple personal signatures, such as Thanks\n<Sender Name> or only <Sender Name>
+- This library doesn't detect some signatures that may appear in automated emails (non personal signatures). 
+- Some material that appear at the end of an email, and is very similar to signatures, may be detected as signature. For instance, online meeting details (containing phone numbers, urls, emails) 
 
 ### Known issues
 
-- When a signature contains a job title that is very long (contains more that 10 words), it might cause the signature not to be detected. The reason is that the algorithm penalizes long lines in signatures. We believe (and hope) that very long job titles are not very common.
+- When a signature contains several long lines, such as job title, address or legal disclaimer, it might cause the signature not to be detected. The reason is that the algorithm penalizes long lines in signatures. The algorithms still detects many sigantures that contains long lines and we believe (and hope) that large number of long lines is not very common.
 - Forwarded email thread with several messages and several signatures: the signatures are not detected in this case.
 
 
