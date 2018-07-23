@@ -53,6 +53,7 @@ from - optional: contains email and displayName used to detect the sender name i
 - Only the english language is supported.
 - This library is intent to be used in the context of entreprise emails. It doens't work well for personal emails.
 - This library doesn't detect well signatures that appear in automated emails. 
+- Some material that appear at the end of an email are detected as signature. For instance, online meeting details. 
 
 ### Known issues
 
@@ -62,9 +63,21 @@ from - optional: contains email and displayName used to detect the sender name i
 
 ## How does it work ?
 
-The library implements a simple algorithm to detect candidate signature starts, and score each candidate by examining the lines following the start.
+The library implements a simple algorithm to detect lines that are candidate for being the start of a signature, and score each candidate by examining the lines following the start.
 
-For example, words such as Thanks and Regards, when used in short lines are considerd a candidate. The score of each candidate is determined by the content of the following lines, such as phone number, email address, url, sender name.
+Example of trigger candidates:
+
+- name of the email sender
+- words such as `Thanks` and `Regards`
+
+The score of each candidate is determined by the likelihood of the following lines to be part of the signature. Each of the lines that follow a trigger candidiate is given a score that relates to this likelihood.
+
+Example of lines with high score:
+
+- phone number
+- email address
+- url
+- sender name.
 
 Also, we implement some heuristics, for instance:
 - long lines should not appear too much in signature
