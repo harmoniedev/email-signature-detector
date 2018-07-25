@@ -52,6 +52,10 @@ function isLongLine(line) {
     return splitLine(line).length > 5;
 }
 
+function numWords(line) {    
+    return splitLine(line).filter((tok)=>tok.length > 1 && tok.match(/[a-zA-Z]/) != null).length;
+}
+
 function mayBeUnsubscribe(line) {
   const words = marketing.getInitSpecialBodyWords();
   marketing.getSpecialBodyWords(line, words);
@@ -108,7 +112,8 @@ function getSenderScore(line, arrSenderTok, requireCloseStart) {
     score = 0;
   } else if (totalLenMatchingToks <= 2) { //* Require matching more than 2 characters (avoid David E. Cohen - match 'E' or Zacharay St. George - Match 'St')
     score = 0;
-  }  else if (requireCloseStart && (minSenderIdx > maxDistFromStartLine)) { //* Require name to be close to start of the line (avoid long lines that are part of email body that mentions sender name)
+  }  else if (requireCloseStart && (minSenderIdx > maxDistFromStartLine) || numWords(line) >= 10) { //* Require name to be close to start of the line (avoid long lines that are part of email body that mentions sender name)
+    //console.log(`non sender: long/far from start: ${line}`);
     score = 0;
   } else if ((maxSenderIdx - minSenderIdx) / totalLenMatchingToks > 2) { //* Require matching sender tokens to be nearby (but not adjacent)
     score = 0;
@@ -155,39 +160,42 @@ const SCORE_SHORT_LIST_LINE = 0.25;
 const SCORE_LONG_LINE_LOW = -0.5;
 const SCORE_LONG_LINE_HIGH = -0.75;
 
-function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok) {
+function getSignatureScore(idxStartSig,idxEndSig, lines, arrSenderTok, startSig) {
     let score = 0;    
     let lni = '';
     for (let i = idxStartSig + 1; i < idxEndSig; ++i) {
-        const line = lines[i];
-        if (maybeEmail(line)  || maybePhone(line) || isInternetService(line) || isSentFromMy(line))  {
-            lni += (`>> +${SCORE_SIG_LINE} line=${line}\n`);
-            score += SCORE_SIG_LINE;
-        } else if (getSenderScore(line,arrSenderTok,true) > 0) {
-            lni += (`>> sender +${SCORE_SIG_LINE} line=${line}\n`);
-            score += SCORE_SIG_LINE;
-        } else if (isUrl(line)) {
-            const numWords = splitLine(line).length;
-            //Score urls less as they appear in a longer line (probably not a signature, but a regular email line)
-            
-            const urlScore = numWords < 15 || isListLine(line) || mayBeUnsubscribe(line) ? SCORE_SIG_LINE : SCORE_URL_LONG_LINE;
-            lni +=(`>> url ${urlScore} line=${line}\n`);
-            score +=  urlScore; 
-        } else if (isEmbeddedImage(line)) {
-          lni +=(`>> cid +${SCORE_EMBEDDED} line=${line}\n`);
-          score += SCORE_EMBEDDED;    
-        } else if (isShortLine(line) || isListLine(line)) {
-            lni += (`>> short +${SCORE_SHORT_LIST_LINE} line=${line}\n`);
-            score += SCORE_SHORT_LIST_LINE;
-        } else if (isLongLine(line) && !mayBeUnsubscribe(line)) {
-          const longScore =  score > 2 ? SCORE_LONG_LINE_LOW : SCORE_LONG_LINE_HIGH;
-          lni += (`>> long ${longScore} line=${line}\n`);
-          //If long line and didn't find any sig-hint (url, phone, list ...) --> may be a false sig start that include many text line below it --> penalize score 
-          //Long-lines should penalize more if not enough evidence (score) is accumulated from idxStartSig until current long line
-          //Ex: Thanks at the beginning --> short email (2-3 long lines) --> long signature (many good sig lines) without a  maybeStartSig --> may cut entire email !!!
-          //If, on the other hand, there are several anti-virus/ecological/legal/marketing advertisment long lines AFTER or in a MIDDLE of a good signature (score is higher) --> penalize less
-          score += longScore; 
-        }               
+        const origLine = lines[i];
+        const iterLines = isListLine(origLine) ? origLine.split('|') : [origLine];
+        for (const line of iterLines) {
+          if (maybeEmail(line)  || maybePhone(line) || isInternetService(line) || isSentFromMy(line))  {
+              lni += (`>> +${SCORE_SIG_LINE} line=${line}\n`);
+              score += SCORE_SIG_LINE;
+          } else if (getSenderScore(line,arrSenderTok,true) > 0) {
+              lni += (`>> sender +${SCORE_SIG_LINE} line=${line}\n`);
+              score += SCORE_SIG_LINE;
+          } else if (isUrl(line)) {
+              const numWords = splitLine(line).length;
+              //Score urls less as they appear in a longer line (probably not a signature, but a regular email line)
+              
+              const urlScore = numWords < 15 || isListLine(line) || mayBeUnsubscribe(line) ? SCORE_SIG_LINE : SCORE_URL_LONG_LINE;
+              lni +=(`>> url ${urlScore} line=${line}\n`);
+              score +=  urlScore; 
+          } else if (isEmbeddedImage(line)) {
+            lni +=(`>> cid +${SCORE_EMBEDDED} line=${line}\n`);
+            score += SCORE_EMBEDDED;    
+          } else if (isShortLine(line)) {
+              lni += (`>> short +${SCORE_SHORT_LIST_LINE} line=${line}\n`);
+              score += SCORE_SHORT_LIST_LINE;
+          } else if (isLongLine(line) && !mayBeUnsubscribe(line)) {
+            const longScore =  score > 2 ? SCORE_LONG_LINE_LOW : SCORE_LONG_LINE_HIGH;
+            lni += (`>> long ${longScore} line=${line}\n`);
+            //If long line and didn't find any sig-hint (url, phone, list ...) --> may be a false sig start that include many text line below it --> penalize score 
+            //Long-lines should penalize more if not enough evidence (score) is accumulated from idxStartSig until current long line
+            //Ex: Thanks at the beginning --> short email (2-3 long lines) --> long signature (many good sig lines) without a  maybeStartSig --> may cut entire email !!!
+            //If, on the other hand, there are several anti-virus/ecological/legal/marketing advertisment long lines AFTER or in a MIDDLE of a good signature (score is higher) --> penalize less
+            score += longScore; 
+          }     
+        } //End iterLines loop         
     }   
     return { score, dbg: { lni } };
 }
@@ -223,9 +231,10 @@ function getSignature(body, from, bodyNoSig) {
     const candStartSig = [];
     for (let i = startLine ; i < lines.length; ++i) {
         const startSig = maybeStartSig(lines[i], arrNameTok); 
-        if ( startSig.found )  {                
-            const ret = getSignatureScore(i,lines.length,lines,arrNameTok);
-            //console.log(`maybeStartSig score=${ret.score} line num/total ${i}/${lines.length} line=${lines[i]} `);
+        if ( startSig.found )  {              
+        
+            const ret = getSignatureScore(i,lines.length,lines,arrNameTok, startSig);            
+            //console.log(`candidate: score=${ret.score} idxStartSig=${i}  lines.length - idxStartSig=${lines.length - i}\n----------dbg:\n${ret.dbg.lni}`);
             candStartSig.push({score: ret.score, props : startSig.props, dbg: ret.dbg, idxStartSig : i});
         }
     }
@@ -254,6 +263,94 @@ function removeSignature(body,from) {
   return ret.found ? ret.bodyNoSig : body;
 }
 
+// const body = `___
+// ה הזמן לסקר היומי....
+// הצביעו והשפיעו !!
+// סקר:
+// סמן ליד המנות אותן אכלת, את דרגת שביעות רצונך מהמנה.
+// עוף   - 1-6, לא אכלתי
+// הערות:
+// Elina Maimon
+// Administration Manager
+// Main: +972-8-9781325|Cell: +972-52-3284900|Fax:+972 8 9219389
+// [Description: Description: http://harmon.ie/sites/default/files/harmonhex2012_logo.png]<http://harmon.ie/>
+// Please consider the environment before printing this e-mail
+// `;
+
+// const email = 'elinam@harmon.ie';
+// const displayName = 'Elina Maimon';
+
+// const body = `Hi Bye\r\nKobi Carlebach | CFO | harmon.ie Corporation
+// M : +972-50-8313-154 |P: +972-8-9781384
+// M (US): +1-408-449-4652
+// 18 Abba Hillel Silver, Lod, 71294, Israel
+// kobic@harmon.ie<mailto:kobic@harmon.ie> | [Description: Description: http://harmon.ie/sites/default/files/harmonhex2012_logo.png] <http://harmon.ie/>
+// Please consider the environment before printing this e-mail
+// `;
+
+// const email = 'kobic@harmon.ie';
+// const displayName = 'Kobi';
+
+// const a_body = 'Test complex signature.\n' +
+// 'Dekel Cohen\n' +
+// 'IBM (Telelogic AB) Southern California Edison Company\n' +
+// '1111 Farmington Avenue, Farmington, CT 11111-XXXX Office: 111.679.XXXX | Cell: 111.679.XXXX | Fax: 111.679.XXXXwww.att.com';
+
+// const email = 'dekel@mail.com';
+// const displayName = 'Dekel Cohen';
+
+
+// const body = 'Test complex signature.\n\n________________________\n' +
+// '\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\n' +
+// 'Blog: http://ow.ly/gqVTU';
+
+const from =  {
+        "displayName" : "Andrei Malacinski/Raleigh/IBM", 
+        "mail" : "malacins@us.ibm.com"
+    }
+
+const body = `Dekel,
+        We've decided we want a technote notifying users of the emulation setting.  In the technote we want to identify the registry setting being used, the reason we set it (BludID support) and to let users know they can clear the setting if it is causing issues.  Can you please write the text for this technote and send it to me.  I will have our ID engineer review and post it.  Also, on our catalog landing page, we will post an informational sentence, such as:  Note:  The plugin makes a config change in Outlook to set its browser emulation mode IE10.  This is necessary for the proper rendering of the login panel, in certain cases.  Please see this technote for details.
+
+
+
+Thanks!
+
+Andrei Malacinski<http://w3.ibm.com/bluepages/simpleSearch.wss?searchBy=Name&location=All+locations&searchFor=malacinski,+andrei>
+Development Manager, IBM Connections.  (IBM Collaboration Solutions)
+IBM Corporation, B500/D117, 4205 S. Miami Blvd, RTP, NC, 27703-9141
+E-mail: malacins@us.ibm.com; Phone: (919) 254-1474
+
+
+
+
+
+From:        Andrei Malacinski/Raleigh/IBM
+To:        "Dekel Cohen" <dekelc@harmon.ie>
+Date:        01/26/2018 05:01 PM
+Subject:        Emulation mode to 10
+________________________________
+
+
+Hi Dekel,
+        I got confirmation from IBM support on your approach to set the IE emulation mode it 10 in the install.  They discussed with the customer (AT&T) and have their agreement.
+
+        Please let me know when you post a build with this change (and also the new license and about panel translations) all together in the same build.
+
+
+Thanks!
+
+Andrei Malacinski<http://w3.ibm.com/bluepages/simpleSearch.wss?searchBy=Name&location=All+locations&searchFor=malacinski,+andrei>
+Development Manager, IBM Connections.  (IBM Collaboration Solutions)
+IBM Corporation, B500/D117, 4205 S. Miami Blvd, RTP, NC, 27703-9141
+E-mail: malacins@us.ibm.com; Phone: (919) 254-1474
+`;
+
+
+//const ret = getSignature(body, from || {email, displayName},true);
+
+
+//console.log(JSON.stringify(ret));
 
 module.exports = {
    getSignature,

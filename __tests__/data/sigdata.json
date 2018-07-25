@@ -52,5 +52,14 @@
       "mail" : "davidl@hmon.ie"
     },
     "body" : ""
+  },
+  {
+    "testName" : "Split long listLine to increase score",
+    "expected" : "________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU",
+    "from" : {
+      "displayName" : "Dekel Cohen",
+      "mail" : "dekel@mail.com"
+    },
+    "body" : "Test complex signature.\n\n________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU"
   }
 ]
