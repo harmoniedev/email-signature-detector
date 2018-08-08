@@ -61,5 +61,14 @@
       "mail" : "dekel@mail.com"
     },
     "body" : "Test complex signature.\n\n________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU"
+  },
+  {
+    "testName" : "long line full of potentential dates",
+    "expected" : "",
+    "from" : {
+      "displayName" : "Yaarit David",
+      "mail" : "yaaritd@harmon.ie"
+    },
+    "body" : "second, third and forth msg attachment. la la la la la   goodbye. \r\n \r\n            Yaarit David Calendar\r\n yaaritd@harmon.ie\r\n Wednesday, November 4, 2015 – Tuesday, November 10, 2015\r\n Time zone: (UTC+02:00) Jerusalem\r\n (Adjusted for Daylight Saving Time)               November 2015         Su   Mo   Tu   We   Th   Fr   Sa                  1    2    3    4   5   6   7             8   9   10   11    12    13    14              15    16    17    18    19    20    21              22    23    24    25    26    27    28              29    30                                                 Busy      Tentative      Free        Out of Office      Working Elsewhere      Outside of Working Hours                  November 2015               Wed, Nov 4                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 3:30 PM    Free         3:30 PM – 4:00 PM    Busy         4:00 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Thu, Nov 5                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 12:30 PM    Free         12:30 PM – 1:30 PM    Busy         1:30 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Fri, Nov 6                Before 8:00 AM    Outside of Working Hours         8:00 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Sat, Nov 7 – Sun, Nov 8                 All Day     Outside of Working Hours               Mon, Nov 9 – Tue, Nov 10                 Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours\r\n"
   }
 ]
