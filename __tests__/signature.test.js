@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const signature = require('email-signature-detector');
-const per = require('email-util/per');
+const per = require('@harmon.ie/email-util/per');
 
 
 const testData = require('./data/sigdata.json');

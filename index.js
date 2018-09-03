@@ -1,7 +1,7 @@
 const _ = require('lodash');
-const per = require('email-util/per');
-const phone = require('email-util/phone');
-const marketing = require('email-util/marketing');
+const per = require('@harmon.ie/email-util/per');
+const phone = require('@harmon.ie/email-util/phone');
+const marketing = require('@harmon.ie/email-util/marketing');
 
 function splitLine(line) {
     const re = /\s/;
