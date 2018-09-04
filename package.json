@@ -20,8 +20,10 @@
   "author": "Dekel Cohen",
   "license": "ISC",
   "dependencies": {
-    "email-util": "git+https://github.com/harmoniedev/email-util.git#development",
-    "jest": "^23.4.1",
+    "@harmon.ie/email-util": "git+https://github.com/harmoniedev/email-util.git#development",    
     "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "jest": "^23.4.1"
   }
 }
