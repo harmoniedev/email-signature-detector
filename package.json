@@ -1,5 +1,5 @@
 {
-  "name": "email-signature-detector",
+  "name": "@harmon.ie/email-signature-detector",
   "version": "0.0.6",
   "description": "Detects and extracts email signatures ",
   "main": "index.js",
