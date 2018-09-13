@@ -1,4 +1,4 @@
-const signature = require('email-signature-detector');
+const signature = require('../index');
 
 const phoneTestData = [
 	{ line: 'phone + 49 30 3080 8556', expected: true },

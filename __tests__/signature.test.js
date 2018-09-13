@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const signature = require('email-signature-detector');
+const signature = require('../index');
 const per = require('@harmon.ie/email-util/per');
 
 
