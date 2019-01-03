@@ -36,11 +36,11 @@ function isEmbeddedImage(str) {
     return re.test(String(str).toLowerCase());
 }
 
+const reSentFromMy = /\s{0,5}sent from my/;
+const reGetOutlook = /\s{0,5}get outlook for/;
 
-
-function isSentFromMy(str) {
-    const re = /\s{0,5}sent from my/;
-    return re.test(String(str).toLowerCase());
+function isSentFromMy(str) {    
+    return reSentFromMy.test(String(str).toLowerCase());
 }
 
 
@@ -126,31 +126,46 @@ function getSenderScore(line, arrSenderTok, requireCloseStart) {
   return score;
 }
 //* Is the line containing pattern of startSig, which is also close to the start and end of line (5 chars)
-function maybeStartSig(line, arrSenderTok) {
+function maybeStartSig(line, arrSenderTok, idxLine) {
     let startSig = false;
     const distFromStartLine = 5;
     let distFromEndLine = 15;
     const normline = String(line).toLowerCase().trim();
-    let m = normline.match(/\s{0,5}sent from my/);
+    let lastLineSig = false;
+    let m = normline.match(reSentFromMy);
+    //Sent from my Samsung Galaxy smartphone.
     if (m && m.length > 0) {    
         if (m.index <= distFromStartLine && normline.length - (m.index + m[0].length) < 40/*distFromEndLine*/ ) {
-            startSig = true;
+            startSig = lastLineSig = true;
         }        
     }
-    if (!startSig) {
-        const re = /thank.{1,30}regards|thank {0,3}you|thanx|thanks|many {0,3}thanks|regard|sincerely|all {0,3}the {0,3}best|best|with {0,3}appreciation|with {0,3}gratitude|yours {0,3}truly|cheers|faithfully|^[\s]*---*[\s]*$|^[\s]*___*[\s]*$/;
-        m = normline.match(re);
-        if (m && m.length > 0) {    
-            if (m.index <= distFromStartLine && normline.length - (m.index + m[0].length) < distFromEndLine ) {
-                startSig = true;
-            }        
-        }
+    //Get Outlook for iOS<https://aka.ms/o0ukef>
+     m = normline.match(reGetOutlook);
+     if (m && m.length > 0) {    
+         if (m.index <= distFromStartLine && normline.length - (m.index + m[0].length) < 40/*distFromEndLine*/ ) {
+             startSig = lastLineSig = true;
+         }        
+     }
+    //For most triggers, do not allow the first line in email - this is to avoid large noise from Emails that starts with Thanks ...  or Start with sender Name
+
+
+    if (idxLine > 0) {
+      //Thanks,
+      if (!startSig) {
+          const re = /thank.{1,30}regards|thank {0,3}you|thanx|thanks|many {0,3}thanks|regard|sincerely|all {0,3}the {0,3}best|best|with {0,3}appreciation|with {0,3}gratitude|yours {0,3}truly|cheers|faithfully|^[\s]*---*[\s]*$|^[\s]*___*[\s]*$/;
+          m = normline.match(re);
+          if (m && m.length > 0) {    
+              if (m.index <= distFromStartLine && normline.length - (m.index + m[0].length) < distFromEndLine ) {
+                  startSig = true;
+              }        
+          }
+      }
+      //David Cohen,
+      if (!startSig) {
+        startSig = lastLineSig = !maybeEmail(line) &&  getSenderScore(line,arrSenderTok,true) >= 1;
+      }
     }
-    let isSender = false;
-    if (!startSig) {
-      startSig = isSender = !maybeEmail(line) &&  getSenderScore(line,arrSenderTok,true) >= 1;
-    }
-    return  { found: startSig, props: { isSender }};
+    return  { found: startSig, props: { lastLineSig }};
 }
 
 const SCORE_SIG_LINE = 1;
@@ -205,7 +220,7 @@ function tryExtractSig({score, dbg, idxStartSig, props },lines, { bodyNoSig }, r
       //* Require > 4 or 30% lines, after the startSig, looks like one of the above signature clues.
       if (score >= 4 || 
          (score / (lines.length - idxStartSig) >= 0.3 ) || 
-         (props.isSender && (lines.length - idxStartSig) === 1)) {
+         (props.lastLineSig && (lines.length - idxStartSig) === 1)) {
           //* Limit to delete only 16 lines from the end of the email (not after the startSig)
           idxStartFinalSig =  Math.max(lines.length - MAX_SIG_NUM_LINES, idxStartSig);
           ret.signature = lines.slice(idxStartFinalSig).join('\r\n');            
@@ -218,7 +233,8 @@ function tryExtractSig({score, dbg, idxStartSig, props },lines, { bodyNoSig }, r
 }
 
 //from.email || from.mail, from.displayName
-function getSignature(body, from, bodyNoSig) {
+function getSignature(body, from, bodyNoSig) {    
+
     let ret = { signature : '',  found : false, dbg: {} };    
     const { arrNameTok } = per.parseMailTokens( from );
     const lines = body.match(/[^\r\n]+/g);
@@ -226,11 +242,11 @@ function getSignature(body, from, bodyNoSig) {
     
     
     //The first line cannot be a signature. It has to start <= MAX_SIG_NUM_LINES lines from the end.
-    const startLine = Math.max(lines.length - MAX_SIG_NUM_LINES,1);
+    const startLine = Math.max(lines.length - MAX_SIG_NUM_LINES,0);
     //Collect candidates for sig, score each one.
     const candStartSig = [];
     for (let i = startLine ; i < lines.length; ++i) {
-        const startSig = maybeStartSig(lines[i], arrNameTok); 
+        const startSig = maybeStartSig(lines[i], arrNameTok,i); 
         if ( startSig.found )  {              
         
             const ret = getSignatureScore(i,lines.length,lines,arrNameTok, startSig);            
@@ -245,11 +261,11 @@ function getSignature(body, from, bodyNoSig) {
 
         tryExtractSig(rankedCands[0],lines, { bodyNoSig }, ret);
         if (!ret.found) {
-          //* Try name only at the end of email sig (even if not enough score)
-          const nameAtEndCands = rankedCands.filter((cand)=> cand.props.isSender && (lines.length - cand.idxStartSig) === 1);
-          if (nameAtEndCands.length > 0) {
-            tryExtractSig(nameAtEndCands[0], lines, { bodyNoSig }, ret);
-            if (ret.found) { cand = nameAtEndCands[0]; }
+          //* Try names and 'sent from My' (Email client vendor sig) at the last line of email, even if not enough score
+          const lastLineCands = rankedCands.filter((cand)=> cand.props.lastLineSig && (lines.length - cand.idxStartSig) === 1);
+          if (lastLineCands.length > 0) {
+            tryExtractSig(lastLineCands[0], lines, { bodyNoSig }, ret);
+            if (ret.found) { cand = lastLineCands[0]; }
           }  
         }
         //console.log(`found=${ret.found} idxStartSig=${cand.idxStartSig} score=${cand.score} lines.length - idxStartSig=${lines.length - cand.idxStartSig} candStartSig.length=${candStartSig.length}\nsig:\n----------\n${ret.signature}\ndbg:\n- - - - - - \n${ret.dbg.lni}`);
