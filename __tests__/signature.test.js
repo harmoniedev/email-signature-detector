@@ -139,7 +139,7 @@ describe('test maybeStartSig', () => {
     for (const a of startSigData) {
         let { arrNameTok } = per.parseMailTokens( a.from );
         it(`test ${a.testName}`, () => {
-            expect(signature.maybeStartSig(a.line, arrNameTok).found).toEqual(a.expected);
+            expect(signature.maybeStartSig(a.line, arrNameTok, 1).found).toEqual(a.expected);
         });
     }
 });
