@@ -22,7 +22,7 @@ function maybePhone(str) {
 }
 
 function isUrl(str) {
-  const re = /http[s]*:\/\/|www\..+\.|web:|website:/;
+  const re = /http[s]*:\/\/|http[s]*: \/  \/ |www\..+\.|web:|website:/;
   return re.test(String(str).toLowerCase());
 }
 

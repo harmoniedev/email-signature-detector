@@ -56,6 +56,17 @@ describe('test isUrl', () => {
     { "text": "Harmonie 10 script 10_4.docx<https://harmoe.sharepoint.com/Mjkjjk/Shared%20Documents/Videos/Harmonie%2010%20script%20%2010_4.docx>", expected: true },
     { "text": "HKEY_CURRENT_USE\\Software\\Ma\\Prefs\\CollageEmbedUrl", expected: false },
 
+    { "text": "https: /  / global.gotomeeting.com / join / 511508838 <https: / / global.gotomeeting.com / join / 511508838>", expected: true },
+    { "text": "First GoToMeeting? Try a test session: https: /  / care.lalaonline.com / g2m / getready\n", expected: true },
+    { "text": "Hi. Please check that this link: https: /  / hon.iell / RSodhhjemo / download provides you with the package you need.", expected: true },
+    { "text": " / / fileservOfficialReleases / / har", expected: false },
+    { "text": "http: /  / cnn.com / aa / har", expected: true },
+    { "text": "Dave /  John", expected: false },
+
+    { "text": "Edit Your Email Settings<https: /  / mjkhkjlkom / track / click / 10342275 /www.cl.com?p=eyJzIjoiRG1jV3lXdVZZZXdwNjhjY2k0cXFIcWZzQk5zIiwidiI6MSwicCI6IntcInVcIjoxMDM0MjI3NSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5jb2Rlc2Nob29sLmNvbVxcXC9hY2NvdW50XFxcL2VkaXRcIixcImlkXCI6XCI4MTNjNTRlMjVmYWU0MzQwODg1NTU0MWNhZGY3NmRkZVwiLFwidXJsX2lkc1wiOltcImU4MWJmMTUzYjUzYWIwZWM1YTRlNzVmNGE4MGQxMTFhY2FlNTFjNGJcIl19In0>", "expected": true },
+    { "text": "Harmonie 10 script 10_4.docx<https: /  / harmoe.sharepoint.com / Mjkjjk / Shared%20Documents / Videos / Harmonie%2010%20script%20%2010_4.docx>", expected: true },
+    { "text": "HKEY_CURRENT_USE\\Software\\Ma\\Prefs\\CollageEmbedUrl", expected: false },
+
   ];
   for (const a of urlData) {
     it(`test ${a.text}`, () => {
