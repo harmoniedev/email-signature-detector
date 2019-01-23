@@ -152,7 +152,7 @@ function maybeStartSig(line, arrSenderTok, idxLine) {
   if (idxLine > 0) {
     //Thanks,
     if (!startSig) {
-      const re = /thank.{1,30}regards|thank {0,3}you|thanx|thanks|many {0,3}thanks|regard|sincerely|all {0,3}the {0,3}best|best|with {0,3}appreciation|with {0,3}gratitude|yours {0,3}truly|cheers|faithfully|^[\s]*---*[\s]*$|^[\s]*___*[\s]*$/;
+      const re = /thank.{1,30}regards|thank {0,3}you|thanx|thanks|many {0,3}thanks|regard|sincerely|all {0,3}the {0,3}best|best|with {0,3}appreciation|with {0,3}gratitude|yours {0,3}truly|cheers|faithfully|^[\s]*---*[\s]*.?$|^[\s]*___*[\s]*.?$/;
       m = normline.match(re);
       if (m && m.length > 0) {
         if (m.index <= distFromStartLine && normline.length - (m.index + m[0].length) < distFromEndLine) {

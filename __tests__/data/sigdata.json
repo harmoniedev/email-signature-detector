@@ -1,74 +1,83 @@
 ﻿[
   {
-    "testName" : "Flight-David",
-    "expected" : "________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "ending dots",
+    "expected": "_____________________ .\nDavid Lavenda<mailto:davidl@harmon.ie> .\nVice President, Product Strategy .\nTel: +1-845-913-7240<tel:1-845-913-7240> .\nBlog: http: /  / ow.ly / gqVTU .\n[cid:image001.jpg@01CEA712.15640750][cid:image002.jpg@01CEA712.15640750]<https: /  / twitter.com / dlavenda> .\n .",
+    "from": {
+      "displayName": "David Lavenda",
+      "mail": "davidl@harmon.ie"
     },
-    "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES                     FRI 11 MAY 2019\r\n-----------------------------------------------------------------------------\r\nDEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       11 MAY 00:30\r\nARRIVAL:   NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        11 MAY 05:10\r\n\r\n\r\nVegas-EWR 23 May (Leaving after 2PM)\r\n\r\n\r\nFLIGHT     LY 074 - EL AL ISRAEL AIRLINES                     THU 24 MAY 2018\r\n\r\n-----------------------------------------------------------------------------\r\n\r\nDEPARTURE: NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        24 MAY 10:30\r\n\r\nARRIVAL:   TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       25 MAY 05:00\r\n\r\n           FLIGHT BOOKING REF: LY/Q29YTR\r\n\r\n\r\nLet’s discuss internal flights\r\n\r\nJFK – Chicago Jet Blue 8:20AM\r\nChicago – NY 13 May evening\r\n\r\n________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
+    "body": "working document with a description of the marketing flows Inside Sales and Marketing Plays<https: /  / teams.microsoft.com / l / entity / 0d820ecd-def2-4297-adad-78056cde7c78 / _djb2_msteams_prefix_3837923586?webUrl=https://www.onenote.com/teams/TabRedirect?redirectUrl=https%3A%2F%2Fharmonie.sharepoint.com%2Fsites%2FInsideSalesandMarketing%2FShared%2520Documents%2FGeneral%2FInside%2520Sales%2520and%2520Marketing%2520Plays&label=Inside+Sales+and+Marketing+Plays&context={\n++groupId=071c2744-a3e5-4f11-9d2a-dd6cb232b80c&tenantId=03122737-f0d8-4f00-ae32-5ff087a3db8f> .\n_____________________ .\nDavid Lavenda<mailto:davidl@harmon.ie> .\nVice President, Product Strategy .\nTel: +1-845-913-7240<tel:1-845-913-7240> .\nBlog: http: /  / ow.ly / gqVTU .\n[cid:image001.jpg@01CEA712.15640750][cid:image002.jpg@01CEA712.15640750]<https: /  / twitter.com / dlavenda> .\n ."
+    },
+  {
+    "testName": "Flight-David",
+    "expected": "________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
+    },
+    "body": "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES                     FRI 11 MAY 2019\r\n-----------------------------------------------------------------------------\r\nDEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       11 MAY 00:30\r\nARRIVAL:   NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        11 MAY 05:10\r\n\r\n\r\nVegas-EWR 23 May (Leaving after 2PM)\r\n\r\n\r\nFLIGHT     LY 074 - EL AL ISRAEL AIRLINES                     THU 24 MAY 2018\r\n\r\n-----------------------------------------------------------------------------\r\n\r\nDEPARTURE: NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        24 MAY 10:30\r\n\r\nARRIVAL:   TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       25 MAY 05:00\r\n\r\n           FLIGHT BOOKING REF: LY/Q29YTR\r\n\r\n\r\nLet’s discuss internal flights\r\n\r\nJFK – Chicago Jet Blue 8:20AM\r\nChicago – NY 13 May evening\r\n\r\n________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
   },
   {
-    "testName" : "no sig",
-    "expected" : "",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "no sig",
+    "expected": "",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
     },
-    "body" : "test"
+    "body": "test"
   },
   {
-    "testName" : "higher score",
-    "expected" : "________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "higher score",
+    "expected": "________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
     },
-    "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n               FRI 11 MAY 2019\r\n-----------------------------------------------------------------------------\r\nDEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       11 MAY 00:30\r\nARRIVAL:   NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        11 MAY 05:10\r\n\r\n\r\nVegas-EWR 23 May (Leaving after 2PM)\r\n\r\n\r\nFLIGHT     LY 074 - EL AL ISRAEL AIRLINES                     THU 24 MAY 2018\r\n\r\n-----------------------------------------------------------------------------\r\n\r\nDEPARTURE: NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        24 MAY 10:30\r\n\r\nARRIVAL:   TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       25 MAY 05:00\r\n\r\n           FLIGHT BOOKING REF: LY/Q29YTR\r\n\r\n\r\nLet’s discuss internal flights\r\n\r\nJFK – Chicago Jet Blue 8:20AM\r\nChicago – NY 13 May evening\r\n\r\n________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
+    "body": "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n               FRI 11 MAY 2019\r\n-----------------------------------------------------------------------------\r\nDEPARTURE: TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       11 MAY 00:30\r\nARRIVAL:   NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        11 MAY 05:10\r\n\r\n\r\nVegas-EWR 23 May (Leaving after 2PM)\r\n\r\n\r\nFLIGHT     LY 074 - EL AL ISRAEL AIRLINES                     THU 24 MAY 2018\r\n\r\n-----------------------------------------------------------------------------\r\n\r\nDEPARTURE: NEW YORK, NY (JOHN F KENNEDY INTL), TERMINAL 4        24 MAY 10:30\r\n\r\nARRIVAL:   TEL AVIV YAFO, IL (BEN GURION INTL), TERMINAL 3       25 MAY 05:00\r\n\r\n           FLIGHT BOOKING REF: LY/Q29YTR\r\n\r\n\r\nLet’s discuss internal flights\r\n\r\nJFK – Chicago Jet Blue 8:20AM\r\nChicago – NY 13 May evening\r\n\r\n________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
   },
   {
-    "testName" : "18 lines",
-    "expected" : "",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "18 lines",
+    "expected": "",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
     },
-    "body" : "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n+972-555-444-888\r\n e: lala@lala.com\r\nhttp://lala.com\r\n fax: 555-444-666-666 \r\nSkypeId: 11223344\r\nshortline\r\nList | Line \r\n List | Line | 2\r\n+1-888-000-111\r\n\r\n\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
+    "body": "FLIGHT     LY 091 - EL AL ISRAEL AIRLINES\r\n Thanks, David\r\nshort\r\nemail@domain.com\r\nphone: 123-123-123-11 \r\n website: lala.com \r\n Linkedin: \r\n CEO | Maketing  \r\n SkypeId: \r\n   David Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\n+972-555-444-888\r\n e: lala@lala.com\r\nhttp://lala.com\r\n fax: 555-444-666-666 \r\nSkypeId: 11223344\r\nshortline\r\nList | Line \r\n List | Line | 2\r\n+1-888-000-111\r\n\r\n\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n"
   },
   {
-    "testName" : "name at the end only",
-    "expected" : "David",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "name at the end only",
+    "expected": "David",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
     },
-    "body" : "The standard edition located on \\ftp\\files\\test\\\\9.0.1.\r\nThanks. \r\nPlease call me if you need any other information\r\nfeel free to contact me at\r\n+1800 00 00 003\r\n\r\nDavid"
+    "body": "The standard edition located on \\ftp\\files\\test\\\\9.0.1.\r\nThanks. \r\nPlease call me if you need any other information\r\nfeel free to contact me at\r\n+1800 00 00 003\r\n\r\nDavid"
   },
   {
-    "testName" : "no body",
-    "expected" : "",
-    "from" : {
-      "displayName" : "David Long",
-      "mail" : "davidl@hmon.ie"
+    "testName": "no body",
+    "expected": "",
+    "from": {
+      "displayName": "David Long",
+      "mail": "davidl@hmon.ie"
     },
-    "body" : ""
+    "body": ""
   },
   {
-    "testName" : "Split long listLine to increase score",
-    "expected" : "________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU",
-    "from" : {
-      "displayName" : "Dekel Cohen",
-      "mail" : "dekel@mail.com"
+    "testName": "Split long listLine to increase score",
+    "expected": "________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU",
+    "from": {
+      "displayName": "Dekel Cohen",
+      "mail": "dekel@mail.com"
     },
-    "body" : "Test complex signature.\n\n________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU"
+    "body": "Test complex signature.\n\n________________________\nDekel Cohen\n\nVice President, Product Strategy\n\nIBM (Telelogic AB). \n\nTel: +1-111-111-111\n\nBlog: http://ow.ly/gqVTU"
   },
   {
-    "testName" : "long line full of potentential dates",
-    "expected" : "",
-    "from" : {
-      "displayName" : "Yaarit David",
-      "mail" : "yaaritd@harmon.ie"
+    "testName": "long line full of potentential dates",
+    "expected": "",
+    "from": {
+      "displayName": "Yaarit David",
+      "mail": "yaaritd@harmon.ie"
     },
-    "body" : "second, third and forth msg attachment. la la la la la   goodbye. \r\n \r\n            Yaarit David Calendar\r\n yaaritd@harmon.ie\r\n Wednesday, November 4, 2015 – Tuesday, November 10, 2015\r\n Time zone: (UTC+02:00) Jerusalem\r\n (Adjusted for Daylight Saving Time)               November 2015         Su   Mo   Tu   We   Th   Fr   Sa                  1    2    3    4   5   6   7             8   9   10   11    12    13    14              15    16    17    18    19    20    21              22    23    24    25    26    27    28              29    30                                                 Busy      Tentative      Free        Out of Office      Working Elsewhere      Outside of Working Hours                  November 2015               Wed, Nov 4                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 3:30 PM    Free         3:30 PM – 4:00 PM    Busy         4:00 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Thu, Nov 5                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 12:30 PM    Free         12:30 PM – 1:30 PM    Busy         1:30 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Fri, Nov 6                Before 8:00 AM    Outside of Working Hours         8:00 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Sat, Nov 7 – Sun, Nov 8                 All Day     Outside of Working Hours               Mon, Nov 9 – Tue, Nov 10                 Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours\r\n"
+    "body": "second, third and forth msg attachment. la la la la la   goodbye. \r\n \r\n            Yaarit David Calendar\r\n yaaritd@harmon.ie\r\n Wednesday, November 4, 2015 – Tuesday, November 10, 2015\r\n Time zone: (UTC+02:00) Jerusalem\r\n (Adjusted for Daylight Saving Time)               November 2015         Su   Mo   Tu   We   Th   Fr   Sa                  1    2    3    4   5   6   7             8   9   10   11    12    13    14              15    16    17    18    19    20    21              22    23    24    25    26    27    28              29    30                                                 Busy      Tentative      Free        Out of Office      Working Elsewhere      Outside of Working Hours                  November 2015               Wed, Nov 4                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 3:30 PM    Free         3:30 PM – 4:00 PM    Busy         4:00 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Thu, Nov 5                Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 12:30 PM    Free         12:30 PM – 1:30 PM    Busy         1:30 PM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Fri, Nov 6                Before 8:00 AM    Outside of Working Hours         8:00 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours               Sat, Nov 7 – Sun, Nov 8                 All Day     Outside of Working Hours               Mon, Nov 9 – Tue, Nov 10                 Before 8:00 AM    Outside of Working Hours         8:00 AM – 11:30 AM    Free         11:30 AM – 11:45 AM    Tentative         11:45 AM – 5:00 PM    Free         After 5:00 PM    Outside of Working Hours\r\n"
   }
 ]
