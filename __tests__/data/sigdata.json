@@ -1,5 +1,32 @@
 ﻿[
   {
+    "testName": "get Outlook",
+    "expected": "Get Outlook for iOS<https://aka.ms/o0ukef>\r\n",
+    "from": {
+      "displayName": "David Lavenda",
+      "mail": "davidl@harmon.ie"
+    },
+    "body": "Yes!\r\nGet Outlook for iOS<https://aka.ms/o0ukef>\r\n"
+  },
+  {
+    "testName": "get Outlook with whitespace",
+    "expected": "Get Outlook for iOS<https: /  / aka.ms / o0ukef> .\n .",
+    "from": {
+      "displayName": "David Lavenda",
+      "mail": "davidl@harmon.ie"
+    },
+    "body": "Re: today's sales meeting Yes!\nGet Outlook for iOS<https: /  / aka.ms / o0ukef> .\n ."
+  },
+  {
+    "testName": "get Outlook with whitespace (2)",
+    "expected": "Get Outlook for iOS<https: /  / aka.ms / o0ukef> .\n . .\n . .\n .",
+    "from": {
+      "displayName": "David Lavenda",
+      "mail": "davidl@harmon.ie"
+    },
+    "body": "Re: today's sales meeting Yes!\nGet Outlook for iOS<https: /  / aka.ms / o0ukef> .\n . .\n . .\n ."
+  },
+  {
     "testName": "ending dots",
     "expected": "_____________________ .\nDavid Lavenda<mailto:davidl@harmon.ie> .\nVice President, Product Strategy .\nTel: +1-845-913-7240<tel:1-845-913-7240> .\nBlog: http: /  / ow.ly / gqVTU .\n[cid:image001.jpg@01CEA712.15640750][cid:image002.jpg@01CEA712.15640750]<https: /  / twitter.com / dlavenda> .\n .",
     "from": {
@@ -7,7 +34,7 @@
       "mail": "davidl@harmon.ie"
     },
     "body": "working document with a description of the marketing flows Inside Sales and Marketing Plays<https: /  / teams.microsoft.com / l / entity / 0d820ecd-def2-4297-adad-78056cde7c78 / _djb2_msteams_prefix_3837923586?webUrl=https://www.onenote.com/teams/TabRedirect?redirectUrl=https%3A%2F%2Fharmonie.sharepoint.com%2Fsites%2FInsideSalesandMarketing%2FShared%2520Documents%2FGeneral%2FInside%2520Sales%2520and%2520Marketing%2520Plays&label=Inside+Sales+and+Marketing+Plays&context={\n++groupId=071c2744-a3e5-4f11-9d2a-dd6cb232b80c&tenantId=03122737-f0d8-4f00-ae32-5ff087a3db8f> .\n_____________________ .\nDavid Lavenda<mailto:davidl@harmon.ie> .\nVice President, Product Strategy .\nTel: +1-845-913-7240<tel:1-845-913-7240> .\nBlog: http: /  / ow.ly / gqVTU .\n[cid:image001.jpg@01CEA712.15640750][cid:image002.jpg@01CEA712.15640750]<https: /  / twitter.com / dlavenda> .\n ."
-    },
+  },
   {
     "testName": "Flight-David",
     "expected": "________________________\r\nDavid Long<mailto:davidl@hmon.ie>\r\nVice President, Product Strategy\r\nTel: +1-444-544-7240<tel:1-789-913-2360>\r\nBlog: http://aa.aaaaaa\r\n[cid:image001.jpg@sdfsdfs.444444][cid:image002.jpg@01CEA712.444444]<https://twittr.com/dnda>\r\n",

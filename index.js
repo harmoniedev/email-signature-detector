@@ -244,7 +244,13 @@ function getSignature(body, from, bodyNoSig) {
     characterOffsetEnd: body.length
   };
   const { arrNameTok } = per.parseMailTokens(from);
-  const lines = body.match(/[^\r\n]+/g);
+  const linesWithSeparator = body.split(/([.\s]*[\r\n]+[.\s]*)/); // lines with only whitespace and dots are considered empty lines
+  const lines = _.filter(linesWithSeparator,
+    (x, i, arr) =>
+      i % 2 === 0
+      && !(i === arr.length - 1 && x === "") // if the last element is empty, remove it
+  );
+
   if (!lines) { return ret; }
 
   //The first line cannot be a signature. It has to start <= MAX_SIG_NUM_LINES lines from the end.
@@ -278,7 +284,6 @@ function getSignature(body, from, bodyNoSig) {
   }
   if (ret.found) {
     const { idxLineStartSig } = ret;
-    const linesWithSeparator = body.split(/([\r\n]+)/);
     const bodyWithoutSigLen = _.take(linesWithSeparator, 2 * idxLineStartSig).join("").length;
     ret.characterOffsetBegin = bodyWithoutSigLen;
     ret.characterOffsetEnd = body.length;

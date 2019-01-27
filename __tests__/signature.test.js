@@ -13,15 +13,15 @@ function testSignature(title, text, from, expected) {
   if (_.isArray(expected)) {
     for (const sigTerm of expected) {
       if (ret.signature.indexOf(sigTerm) === -1) {
-        throw new Error(`Failure in array: **Expected**: ${sigTerm}\n\n**Actual**:${ret.signature}`);
+        throw new Error(`Failure in array:\n **Expected**: ${sigTerm}\n\n**Actual**:${ret.signature}`);
       }
     }
   } else {
     if (ret.signature !== expected) {
-      throw new Error(`Failure in signature: **Expected**:\n${expected}\n\n**Actual**:\n${ret.signature}`);
+      throw new Error(`Failure in signature:\n **Expected**:\n${expected}\n\n**Actual**:\n${ret.signature}`);
     }
     if (text.slice(ret.characterOffsetBegin, ret.characterOffsetEnd) !== expected) {
-      throw new Error(`**Failure in characterOffsetBegin:**\n**Expected**:\n${expected}\n\n**Actual**:\n${text.slice(ret.characterOffsetBegin)}`);
+      throw new Error(`Failure in characterOffsetBegin:\n**Expected**:\n${expected}\n\n**Actual**:\n${text.slice(ret.characterOffsetBegin)}`);
     }
   }
 
