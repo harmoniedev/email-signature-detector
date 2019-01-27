@@ -5,7 +5,8 @@ const marketing = require('@harmon.ie/email-util/marketing');
 
 function splitLine(line) {
   const re = /\s/;
-  return line.split(re);
+  const convertedLine = line.replace(/\s\/\s/g, "/"); // convert " / " to "/"
+  return convertedLine.split(re);
 }
 
 const MAX_SIG_NUM_LINES = 18;
