@@ -20,7 +20,7 @@
   "author": "Dekel Cohen",
   "license": "ISC",
   "dependencies": {
-    "@harmon.ie/email-util": "git+https://github.com/harmoniedev/email-util.git#development",    
+    "@harmon.ie/email-util": "git+https://github.com/harmoniedev/email-util.git#development",
     "lodash": "^4.17.10"
   },
   "devDependencies": {
